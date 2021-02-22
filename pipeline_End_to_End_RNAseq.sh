@@ -80,11 +80,11 @@ do
 
 done
 
-for i in `cat /home/mskaro1/storage/ATXN/mRNA/concatenated/ID`;
+for i in `cat /home/mskaro1/storage/ATXN/miRNA/concatenated/ID`;
 do
         echo $i\ ;
 #       echo $i\_R1_trimmed_001.fastq.gz ;
-#       echo $i\_R2_trimmed_001.fastq.gz ;
+#       
 
         salmon quant -i /home/mskaro1/storage/ATXN/mouse_ref/salmon_index --libType A \
           -r $i\_R1_trimmed_001.fastq.gz \
