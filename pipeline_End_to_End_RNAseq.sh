@@ -70,7 +70,7 @@ do
         echo $i\ ;
 #       echo $i\_R1_trimmed_001.fastq.gz ;
 #       echo $i\_R2_trimmed_001.fastq.gz ;
-
+# quantify mRNA transcripts put in quant/
         salmon quant -i /home/mskaro1/storage/ATXN/mouse_ref/salmon_index --libType A \
           -1 $i\_R1_trimmed_001.fastq.gz \
           -2 $i\_R2_trimmed_001.fastq.gz \
@@ -85,6 +85,7 @@ do
         echo $i\ ;
 #       echo $i\_R1_trimmed_001.fastq.gz ;
 #       
+# quantify mRNA transcripts put in quant/
 
         salmon quant -i /home/mskaro1/storage/ATXN/mouse_ref/salmon_index --libType A \
           -r $i\_R1_trimmed_001.fastq.gz \
@@ -94,9 +95,9 @@ do
 
 
 
-# output the counts files in the /alginedBAM/
 
-# quantify mRNA transcripts put in results/counts/
+
+# quantify mRNA transcripts put in quant/
 
 # invoke DEseq2 pipeline
 
