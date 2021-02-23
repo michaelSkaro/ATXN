@@ -4,24 +4,6 @@
 # Purpose: End-to-End QC, RNAseq and DEseq2 analyses
 
 
-#Operator	Description
-#! EXPRESSION	The EXPRESSION is false.
-#-n STRING	The length of STRING is greater than zero.
-#-z STRING	The lengh of STRING is zero (ie it is empty).
-#STRING1 = STRING2	STRING1 is equal to STRING2
-#STRING1 != STRING2	STRING1 is not equal to STRING2
-#INTEGER1 -eq INTEGER2	INTEGER1 is numerically equal to INTEGER2
-#INTEGER1 -gt INTEGER2	INTEGER1 is numerically greater than INTEGER2
-#INTEGER1 -lt INTEGER2	INTEGER1 is numerically less than INTEGER2
-#-d FILE	FILE exists and is a directory.
-#-e FILE	FILE exists.
-#-r FILE	FILE exists and the read permission is granted.
-#-s FILE	FILE exists and it's size is greater than zero (ie. it is not empty).
-#-w FILE	FILE exists and the write permission is granted.
-#-x FILE	FILE exists and the execute permission is granted.
-
-
-
 
 # Move file from the subdirectories up to a fasq folder
 find . -name '*.gz' -exec mv {} /Volumes/easy\ store/Mouse_RNAseq/3510-224966743/FASTQ \;
@@ -70,7 +52,7 @@ do
         echo $i\ ;
 #       echo $i\_R1_trimmed_001.fastq.gz ;
 #       echo $i\_R2_trimmed_001.fastq.gz ;
-# quantify mRNA transcripts put in quant/
+
         salmon quant -i /home/mskaro1/storage/ATXN/mouse_ref/salmon_index --libType A \
           -1 $i\_R1_trimmed_001.fastq.gz \
           -2 $i\_R2_trimmed_001.fastq.gz \
@@ -80,35 +62,54 @@ do
 
 done
 
-for i in `cat /home/mskaro1/storage/ATXN/miRNA/concatenated/ID`;
+for i in `cat /home/mskaro1/storage/ATXN/mRNA/concatenated/ID`;
 do
         echo $i\ ;
 #       echo $i\_R1_trimmed_001.fastq.gz ;
-#       
-# quantify mRNA transcripts put in quant/
+#       echo $i\_R2_trimmed_001.fastq.gz ;
 
         salmon quant -i /home/mskaro1/storage/ATXN/mouse_ref/salmon_index --libType A \
           -r $i\_R1_trimmed_001.fastq.gz \
           -p 8 --validateMappings \
           -o quant/$i;
 
+done
+#download data from the SRA to prepare for analysis
+
+for i in `cat /home/mskaro1/storage/ATXN/sra_downloads/mRNA_downloads/mRNA_ID.txt`;
+do
+        echo $i\ ;
+
+        fastq-dump $i;
+
+
+done
+
+
+for i in `cat /home/mskaro1/storage/ATXN/sra_downloads/mRNA_downloads/miRNA_ID.txt`;
+do
+        echo $i\ ;
+
+        fastq-dump $i;
+
+
+done
+
+# complete fastq trimming and cleaning on SRA data
+
+
+
+# complete quantification with salmon on miRNA and mRNA data
 
 
 
 
+# output the counts files in the /alginedBAM/
 
-# quantify mRNA transcripts put in quant/
+# quantify mRNA transcripts put in results/counts/
 
 # invoke DEseq2 pipeline
 
 # Differential expression analysis
-
-
-
-
-
-
-
-
 
 #END
