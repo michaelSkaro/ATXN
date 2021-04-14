@@ -36,7 +36,7 @@ rule trimmomatic:
 		forwardPaired = "trimmed_reads/{id}_1P.fastq.gz",
 		reversePaired = "trimmed_reads/{id}_2Pfastq.gz"
 	params:
-		basename ="trimmed_reads/{id}.fastq.gz"
+		basename ="trimmed_reads/{id}.fastq.gz",
 		log ="trimmed_reads/{id}.log"
 		
 	threads:
@@ -52,7 +52,7 @@ rule star:
 		read2 = rules.trimmomatic.output.reversePaired
 	output:
 		bam = "star_aligned/{id}Aligned.out.bam",
-		transcriptomeBam = "star_aligned/{id}Aligned.toTranscriptome.out.bam"
+		transcriptomeBam = "star_aligned/{id}Aligned.toTranscriptome.out.bam",
 		log = "star_aligned/{id}Log.final.out",
 		geneCounts = "star_aligned/{id}ReadsPerGene.out.tab",
 		SJ = "star_aligned/{id}SJ.out.tab"
@@ -63,7 +63,7 @@ rule star:
 	shell:
 	'''
 	STAR \
-		--runThreadN {threads} \
+	--runThreadN {threads} \
         --readFilesIn {input.reads1} {input.read2} \
         --outSAMattrRGline {params.prefix} \
         --alignIntronMax 1000000 \
@@ -96,13 +96,13 @@ rule star:
         --twopassMode Basic
 	'''
 
-
-'''
+"""
 # dry run
 snakemake -s snakefile.py -n 
 # forrrr real
 snakemake -s snakefile.py -j 30
-'''
+"""
+
 
 
 
