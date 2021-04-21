@@ -6,7 +6,7 @@
 
 ### Outline:
 ### [Transcriptomics] 
-### [Variantion and Cancer Genetics] [Variant Analysis GTAk best Practices] (https://github.com/michaelSkaro/ATXN/tree/main/DataPreprocessing/variant_calling).
+### [Variantion and Cancer Genetics] [Variant Analysis GTAk best Practices] (./DataPreprocessing/variant_calling).
   
 [X] Portable conda environment 
 [-] Clean up into snakemake incoming 
