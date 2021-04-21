@@ -26,6 +26,10 @@
 [X] Make the directories
 [X] Annotate using Functotator: gatk. 
 [-] Formalize with snakemake
+
+```
+./variant_annotation_GATK.sh
+```
   
 ### [microRNA-Regulation]
 ### [inflammation signature]
