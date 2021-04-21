@@ -7,11 +7,11 @@
 ### Outline:
 ### [Transcriptomics] 
 ### [Variantion and Cancer Genetics](https://github.com/michaelSkaro/ATXN/tree/main/DataPreprocessing/variant_calling).
-  
+
 [X] Portable conda environment 
 [-] Clean up into snakemake incoming 
 [-] Pull from config and yml
-
+[-] Modify from [humans](https://github.com/UGA-CSBL/rna-seq-variant-calling) to mouse
 ```
 ./set_up_conda.sh
 ```
