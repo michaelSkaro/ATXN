@@ -6,7 +6,7 @@
 
 ### Outline:
 ### [Transcriptomics] 
-### [Variantion and Cancer Genetics](https://github.com/michaelSkaro/Classification_of_organotropic_metastases/blob/master/bio-analysis/feature-recapture/Enriched_features_Fisher_weighted_simulation.R).
+### [Variantion and Cancer Genetics](https://github.com/michaelSkaro/ATXN/tree/main/DataPreprocessing/variant_calling).
   
 [X] Portable conda environment 
 [-] Clean up into snakemake incoming 
