@@ -38,3 +38,37 @@ clusplot(data_for_clustering, clusters_iris$cluster, color = TRUE, shade = TRUE)
 
 
 ```
+This is a good start to data exploration. You have completed a lot more in this short code snippet than you may think. You used continuous random variables that were organized into 4 columns to characterize a target variable. You set the species column to NULL to hide the true values. Then used an unsupervised machine learning technique to characterize the target value of the species. Further, you used a liner dimensionality reduction technique to project a vector of observation values into a two dimensional plane. 
+
+
+Time to improve your coding:
+
+This code is very specific to the iris data set. This is therefore unacceptable. If someone wanted to generalize the code to their own needs they would essentially to re-write all of the code and follow the exact steps you did, in the same order. 
+
+
+You objective for today will be to formalize this into a process for which we have an data.frame with continuous data, and an unknown target variable we would like to characterize. There may be underlying patterns that exist in the data that we do not know without testing.
+
+1. Make a function for making summary plots for each pairwise column comparison like you did for the sepal width vs. speal length. It should accept a dataframe object as an argument, annotate all of the pairwise comparisons, that are possible for the summary plots and make pairwise plots on a grid. 
+
+You should aim to make visually pleasing and informative plots. This takes time and effort but is absolutely worth taking the time. Read through this guide and get a feel for the grammar of graphics. 
+
+grammar of graphics. Understanding how to organize data exploration:
+
+https://cran.r-project.org/web/packages/egg/vignettes/Ecosystem.html
+
+http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page/
+
+
+
+2. Make a function for each type of statistical or ML operation you do after testing it as a script. This is how you can quickly build pieces of pipelines that will be called in succession. 
+
+functions in R:
+https://swcarpentry.github.io/r-novice-inflammation/02-func-R/
+
+3. This is a bit advanced but I think you can try doing this through the week. Think about why you are completing the operations you are doing on the data. I like the idea of having you using the functions you build to complete tasks. Why did you cluster the data what infromation did you gain by doing so? why did you reduce the data into it's first two principal components? Why did those components explain the "variance in the data' what does that mean?
+
+Well, you labeled the data. You uncovered an underlying pattern for the flowers. The species of the flowers can be annotated using four variables, or in this case, just two. But, how good as this operation? We need to validate how well the K-means algorithm did at binning the flowers into the classes we identified as clusters 1, 2 and 3. 
+
+Thus, a nice improvement would be an evaluation function. Use the true labels as the ground truth and build a function that compares the cluster each sample was assigned to vs. the actual class label.
+
+Good start!
