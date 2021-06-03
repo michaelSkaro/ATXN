@@ -23,11 +23,12 @@ library(C50)
 Loading the library database and setting the data frame = the iris data set
 ```{r}
 library(datasets) #this would be removed when dataset is available
-dataframe <- iris #"iris" would be replaced with the file.choose(*datafilename*)
+df <- iris #"iris" would be replaced with the file.choose(*datafilename*)
 ```
-Each function used to interpret the iris data set.
+## Each function used to interpret the iris data set.
 ```{r}
-summaryinfo <- function(dataframe){ #shows summary for data including str(prints all data to the console, dim(prints the number of rows and columns), and summary (shows statistical information about the data in that item).
+summaryinfo <- function(dataframe){ 
+  #shows summary for data including str(prints all data to the console, dim(prints the number of rows and columns), and summary (shows statistical information about the data in that item).
   str(dataframe)
   dim(dataframe)
   summary(dataframe) 
@@ -106,3 +107,71 @@ clustplot <- function(dataframe){
   clusplot(data_for_clustering, clusters_dataframe$cluster, color = TRUE, shade = TRUE)
 }
 #I am still working on arranging these using ggpubr. When I try to use the gg*plotname* command, it says that I am supplying too many data points.
+```
+
+
+### Trying each function 
+
+```{r}
+# lets try running the functions
+#beanplot(df) # error
+#Error in beanplot(xiris, col = c("#ff8080", "#0000FF", "#0000FF", "#FF00FF"),  : 
+#  unused arguments (col = c("#ff8080", "#0000FF", "#0000FF", "#FF00FF"), border = #"#000000")
+
+boxplots(df) # needs a title and the axis are not labeled
+
+boxplotspec(df) # much better. This is strong. I instantly knew what was being visualized
+
+clustplot(df) # good but I think there should be a legend within the corner to 
+#give me some context
+
+corr(df) # great this is perfect
+
+histplot(df)
+histplotsspec(df) # this is remarkably boring. The hist plot needs labels on both axis. # and the title is the auto-generated. I am sure it will look much better in the ggpubr
+
+pairsplots(df) # very strong. Needs a title. I think you should also change the points
+# The hollow ciricles are the default. Try using a small solid circle. I like the color # annotations. That is very good. However, red and green are too close. When you see  them over lap like that you'll want to change to like a forest green if you change the green or a magenta if you want to change the red. 
+
+#parcoord(df) # error 
+#Error in parcoord(dataframe[, 1:4], col = dataframe[, 5], var.label = TRUE,  : 
+#  unused arguments (col = dataframe[, 5], var.label = TRUE, oma = c(4, 4, 6, 12))
+
+summaryinfo(df) #Good.
+
+#treeprun(df) # error
+# Error in eval(parse(text = paste(obj$call)[xspot])) : object 'input' not found
+
+#treeunprun(df) # error
+
+#Error in eval(parse(text = paste(obj$call)[xspot])) : object 'input' not found
+
+```
+
+### Code Review:
+
+Are you knitting this code at the completion of each function? There seems to be a number of errors during knitr. When you write a function, or complete
+a section its is wise to hit the knit button to resolve any dpeendency issues. Some libraries may clash and the difficulty is to know when to load the library
+into your active packages and when to draw from them by name directly the library::function(). 
+
+#### Time to get fancy: 
+Take a look at this: https://guides.github.com/features/mastering-markdown/ . This link will allow you to start setting some more complex
+Notes that way they are not in line commments but are a bit more comprehensive techniques to document your code. It is a super quick and super easy reminder guide that I refer to all the time when I am knitting together a formal markdown file.  It is not a big deal but it really shows you are thinking about your code and looks very professional when you have decorated with the MasterOfMarkdown style guide knitted within your code. 
+
+1.
+Line 24: ******Do not do this********
+library(datasets) #this would be removed when dataset is available
+dataframe <- iris #"iris" would be replaced with the file.choose(*datafilename*) ******Do not do this********
+
+In general you should refrain from naming things to close to the rlang name.
+A dataframe is an object but it is drawn from a library that makes data.frames.
+
+Replace with: df <- iris
+
+2. See in line comments when I try each funtion. A few came up with errors. That is okay but trouble shoot a bit here and try to fix them.
+
+###### Overall: Very strong. I am liking what I am seeing from you. I am excited to see what you puttogether for the ggpubr. 
+
+##### Next steps: 
+
+
