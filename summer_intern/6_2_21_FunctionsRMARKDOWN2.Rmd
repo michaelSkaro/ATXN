@@ -91,7 +91,7 @@ corr <- function(dataframe){ #correlation function to determine which of the pai
 beanplot <- function(dataframe){ #creates a beanplot which shows the density curve not present in a boxplots
   xiris <- dataframe
   xiris$Species <- NULL
-  beanplot(xiris,col=c('#ff8080','#0000FF','#0000FF','#FF00FF'), border = "#000000")
+  beanplot(xiris,col=c('#ff8080','#0000FF','#0000FF','#FF00FF'), border = "#000000") 
   #name the plot by adding "main = *plot name*
 }
 clustplot <- function(dataframe){
@@ -170,8 +170,29 @@ Replace with: df <- iris
 
 2. See in line comments when I try each funtion. A few came up with errors. That is okay but trouble shoot a bit here and try to fix them.
 
+
+3. beanplot <- function(dataframe){ #creates a beanplot which shows the density curve not present in a boxplots
+  xiris <- dataframe why are you naming in the functin? just use the vairable as it exists in the function. You'll only manipulating the object in the function
+  xiris$Species <- NULL
+  beanplot(xiris,col=c('#ff8080','#0000FF','#0000FF','#FF00FF'), border = "#000000") # you are calling the function in the function. That doesn't make sense. You # have to name this something different if the rlang is called beanplot(). your function will override the rlang for your session and throw up and error. 
+  #name the plot by adding "main = *plot name*
+} 
+
+
 ###### Overall: Very strong. I am liking what I am seeing from you. I am excited to see what you puttogether for the ggpubr. 
 
 ##### Next steps: 
+1. Fix errors. 
+2. Add color, and legeneds where necessary.
+3. Begin statisitical analysis and modeling of the data :) 
+
+##### Data analysis:
+The statistical analysis of features allows us to draw conclusions and results. Naturally, if you were an environmental biologist you would want to 
+know if there were differences between the versicolor and setosa sepal width etc etc. So, we will use R for its statisical prowess now. See these resources:
+
+https://bookdown.org/mikemahoney218/IDEAR/
+
+Go through Mike Honey's Section2 through Section15. Make functions for all of the operations. When you get through this, we will move to using some bioinfromatics packages. Take this slow. You'll really need to know about the data wrangling, statsitical modeling and feature enegineering when we begin using the bigger data. Great job!!
+
 
 
