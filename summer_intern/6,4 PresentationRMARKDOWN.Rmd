@@ -1,0 +1,74 @@
+---
+title: "6/4 Presentation"
+author: "Skylar A. Gay"
+date: "6/1/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(corrplot)
+library(cluster) 
+library(fpc)
+library(tidyverse)
+library(cluster)
+library(reshape2)
+df <- iris
+
+summaryinfo <- function(df){
+  str(df)
+  dim(df)
+  summary(df) 
+}
+summaryinfo(df)
+
+boxplotspec <- function(df){ #creates a boxplot for each species
+  dfsub1 <- subset(df, Species == "versicolor")
+  dfsub2 <- subset(df, Species == "setosa")
+  dfsub3 <- subset(df, Species == "virginica")
+  par(mfrow=c(1,3),mar=c(6,3,2,1))
+  boxplot(dfsub1[,1:4], main="Versicolor",ylim = c(0,8),las=2, col=c("green"))
+  boxplot(dfsub2[,1:4], main="Setosa",ylim = c(0,8),las=2, col=c("grey"))
+  boxplot(dfsub3[,1:4], main="Virginica",ylim = c(0,8),las=2, col=c("magenta"))
+}
+boxplotspec(df)
+
+histplotsspec <- function(df){
+  dfsub1 <- subset(df, Species == "versicolor")
+  dfsub2 <- subset(df, Species == "setosa")
+  dfsub3 <- subset(df, Species == "virginica")
+  hist1 <- hist(dfsub1$Petal.Length,breaks=seq(0,8,l=17),xlim=c(0,8),ylim=c(0,40), col=c("green"), main="Versicolor Petal Length", xlab="Length")
+  hist2 <- hist(dfsub2$Petal.Length,breaks=seq(0,8,l=17),xlim=c(0,8),ylim=c(0,40), col=c("grey"),main="Setosa Petal Length", xlab="Length")
+  hist3 <- hist(dfsub3$Petal.Length,breaks=seq(0,8,l=17),xlim=c(0,8),ylim=c(0,40), col=c("magenta"), main="Virginica Petal Length", xlab="Length")
+}
+histplotsspec(df)
+
+clustplot <- function(df){
+  set.seed(8593)
+  df$Species <- NULL
+  (kmeans.result <- kmeans(df, 3))
+  data_for_clustering <- df[,-5] 
+  clusters_df <- kmeans(data_for_clustering, centers = 3) 
+  clusplot(data_for_clustering, clusters_df$cluster, color = TRUE, shade = TRUE, main="Iris Cluster", col.clus=c("grey", "green", "magenta"), col.p = c("black"))
+}
+clustplot(df)
+
+pairsplots <- function(df){
+  pairs(df[,1:4],col=c("black","green","magenta"),oma=c(4,4,6,12),main="Iris Scatterplot Matrix",pch = 16)
+  legend(0.4,0.65, as.vector(unique(df$Species)),fill=c("black","green","magenta"))
+}
+pairsplots(df)
+
+corr <- function(df){
+  corr <- cor(df[,1:4])
+  round(corr,3) 
+  #posetive 1 = correlated
+  #negative 1 = inverse correlation
+}
+corr(df)
+```
