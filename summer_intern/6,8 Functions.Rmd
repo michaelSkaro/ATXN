@@ -1,0 +1,160 @@
+---
+title: "6/7-8 Functions"
+author: "Skylar A. Gay"
+date: "6/8/2021"
+output: html_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+library(dplyr)
+library(ggplot2)
+library(corrplot)
+library(cluster) 
+library(fpc)
+library(devtools)
+library(ggpubr)
+library(C50)
+library(tidyverse)
+library(cowplot)
+
+ggplotsmooth <- function(df){
+  ggplot(df, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + 
+    geom_point() + 
+    geom_smooth()
+}
+ggplotline <- function(df){
+  ggplot(data = df, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + 
+    geom_smooth(aes(linetype = Species), size = 1, se = FALSE) + 
+    geom_point(aes(shape = Species), size = 3) + 
+    scale_shape_manual(values = c(16, 17, 18)) + 
+    scale_color_manual(values = c("purple",
+                                  "black",
+                                  "orange")) + 
+    scale_linetype_manual(values = c("solid",
+                                     "dashed",
+                                     "twodash"))
+}
+fctvert <- function(df){ #vertical
+  ggplot(data = df, aes(x = Sepal.Length, y = Sepal.Width)) + 
+    geom_point(size = 3) + 
+    geom_smooth(size = 1, se = FALSE) + 
+    facet_wrap(~ Species)
+}
+fcthor <- function(df){
+  ggplot(data = df, aes(x = Sepal.Length, y = Sepal.Width)) + 
+    geom_point(size = 3) + 
+    geom_smooth(size = 1, se = FALSE) + 
+    facet_grid(rows = vars(Species))
+}
+gpplot <- function(df){
+  ggplot(df, aes(carat, price)) + 
+    geom_point(alpha = 0.05) + 
+    scale_y_continuous(trans = "log") + 
+    scale_x_continuous(trans = "log")
+}
+ghplot <- function(df){
+  ggplot(df, aes(price)) + 
+    geom_histogram()
+}
+gbplot <- function(df){
+  ggplot(df, aes(x = cut)) + 
+    geom_bar()
+}
+gbplotcy <- function(df){
+  ggplot(df, aes(cut, fill = clarity)) + 
+    geom_bar()
+}
+gcplot <- function(df){
+  ggplot(data.frame(x = c(1, 1, 2, 2, 3, 3), 
+                    y = c(40, 60, 30, 70, 20, 80), 
+                    z = c("A","B","A","B", "A", "B")), aes(x, y, fill = z)) + 
+    geom_col()
+}
+gbarplot <- function(df){
+  ggplot(df, aes(cut, fill = clarity)) + 
+    geom_bar(position = "dodge")
+}
+gjplotcy <- function(df){
+  ggplot(df, aes(cut, clarity)) + 
+    geom_jitter(alpha = 0.05)
+}
+gjplot <- function(df){
+  ggplot(df, aes(Sepal.Length, Sepal.Width, color = Species)) + 
+    geom_jitter() + 
+    scale_color_manual(values = c("black",
+                                  "green",
+                                  "magenta"))
+}
+gbxplot <- function(df){
+  ggplot(df, aes(cut, price)) + 
+    geom_boxplot()
+}
+gptplot <- function(df){
+  ggplot(df, aes(Sepal.Length, Sepal.Width, color = Species)) + 
+    geom_point() + 
+    scale_color_manual(values = c("black",
+                                  "green",
+                                  "magenta")) +
+    theme_bw()
+}
+glplot <- function(df){
+  ggplot(data.frame(x = 1:10, 
+                    y = 61:70), aes(x, y)) + 
+    geom_line() + 
+    background_grid()
+}
+glncol <- function(df){
+  ggplot(df, aes(x = Year)) + 
+  geom_line(aes(y = Winter), color = "black") + 
+  geom_line(aes(y = Spring), color = "green") + 
+  geom_line(aes(y = Summer), color = "magenta") + 
+  geom_line(aes(y = Fall), color = "cornflowerblue")
+}
+ute <- function(df){
+  unite(
+  (separate
+   (df, 
+     Results, 
+     c("FirstRace", "SecondRace", "ThirdRace"), 
+     sep = "-")), 
+  TotalTime, 
+  TotalMinutes, 
+  TotalSeconds, 
+  sep = ":")
+}
+mttdbl <-  function(df){
+  mutate(dblcol = AvgTemp * 2)
+}
+mttdblsqr <- function(df){
+  LongTemps %>%
+  mutate(TwiceTemp = AvgTemp * 2,
+         TwiceSquaredTemp = TwiceTemp^2,
+         YearSeason = paste(Year, Season))
+}
+avg <- function(df){
+  mean(df$col)
+}
+testcor <- function(df){
+  cor.test(iris$Sepal.Length, iris$Sepal.Width)
+}
+fltrcol <- function(df){
+  df[df$Sepal.Length > 7.5, ]
+}
+fltrtp <- function(df){
+  df %>%
+  filter(Species == "setosa")
+}
+fltrtpcol <- function(df){
+  df %>%
+  filter(Species == "setosa" & Sepal.Length == 5.1 & Sepal.Width == 3.3)
+}
+mttmn <- function(df){
+iris %>%
+  select(c(Sepal.Length, Species)) %>%
+  group_by(Species) %>%
+  mutate(SLDistanceFromGroupMean = Sepal.Length - mean(Sepal.Length)) %>%
+  ungroup() %>%
+  mutate(SLDistanceFromTotalMean = Sepal.Length - mean(Sepal.Length))
+}
