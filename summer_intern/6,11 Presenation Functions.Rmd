@@ -33,6 +33,12 @@ library(magick)
 library(ggridges)
 library(maps)
 library(mapdata)
+library(pROC)
+library(broom)
+library(knitr)
+library(kableExtra)
+library(lubridate)
+library(bookdown)
 
 ggplotsmooth <- function(df){
   ggplot(df, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + 
@@ -285,7 +291,7 @@ gareaplot <-function(df){
     scale_fill_brewer(palette="Purples")
 }
 grdgsplot <- function(df){
-  ggplot(iris, aes(Sepal.Length, Species)) + 
+  ggplot(df, aes(Sepal.Length, Species)) + 
   ggridges::geom_density_ridges(aes(fill = Species))
 }
 pieplot <- function(df){
@@ -295,5 +301,98 @@ pie(df$x, df$y)
 }
 sumdesc <- function(df){
   return(list(Summary = summary(df), Describe = psych::describe(x)))
+}
+logplot <- function(df){
+  LogModelROC <- roc(df$y, AthleteLogisticModel$fitted.values)
+  plot.roc(LogModelROC)
+}
+glnce <- function(df){
+  glance(df)
+}
+datadsply <- function(df){
+df %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", 
+                                      "hover", 
+                                      "condensed", 
+                                      "responsive"), 
+                full_width = FALSE) %>%
+  scroll_box(height = "250px")
+}
+strfindexct <- function(df){
+  string <- c("lzGDHgldkh3orange2o5ghte")
+  str_detect(string, "orange")
+  str_locate(string, "orange")
+}
+strrplc <- function(df){
+  str_replace(string, "orange", "apple")
+}
+strxtrtlet <- function(df){
+  string <- c("lzGDHgldkh3orange2o5ghte")
+  str_extract_all(string, "o....e")
+}
+strxtrta <- function(df){
+  str_extract_all(string, "o\\D*?e")
+}
+dttm <- function(){
+  as_datetime(0)
+}
+dt <- function(){
+  as_date(0)
+}
+tmtbl <- function(){
+  TimeTable <- tibble(year = 2018,
+       day = 18,
+       hour = 5,
+       month = 2,
+       seconds = 5,
+       minute = 20)
+
+TimeTable %>%
+  mutate(date = make_date(year, month, day),
+         time = make_datetime(year, month, day, hour, minute, seconds))
+}
+dttmchng <- function(){
+  year(OurDate) <-  2020
+}
+tmzn <- function(){
+  Sys.timezone()
+}
+dshbrd <- function(df){
+  knitr::include_graphics("image")
+}
+avgtrm <- function(df){
+  mean(Vector, trim = 0.)
+}
+vr <- function(df){
+  var(Vector$col)
+}
+stdeverr <- function(df){
+  sd(Vector$col)
+  sd(Vector$col)/sqrt(length(Vector$col))
+}
+med <- function(df){
+  median(Vector$col)
+}
+rng <- function(df){
+  max(Vector$col) - min(Vector$col)
+}
+crtst <- function(df){
+  cor.test(vecotr$col, vector$col, method = "pearson")
+}
+ttst <- function(df){
+  t.test(Vector1, Vector2)
+}
+csqtst <- function(df){
+  chisq.test(Vector1, Vector2) 
+}
+linmod <-function(df){
+  lm(ResponseVector ~ PredictorVectors, data)
+}
+logmod <- function(df){
+  glm(ResponseVector ~ PredictorVectors, data, family = "binomial")
+}
+r2 <- function(df){
+  summar(lm(Sepal.Length ~ Species, iris))
 }
 ```
