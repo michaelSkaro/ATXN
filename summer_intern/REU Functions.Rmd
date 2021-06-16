@@ -1,0 +1,488 @@
+---
+title: "Functions"
+author: "Skylar A. Gay"
+date: "6/16/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+library(dplyr)
+library(ggplot2)
+library(corrplot)
+library(cluster) 
+library(fpc)
+library(devtools)
+library(ggpubr)
+library(C50)
+library(tidyverse)
+library(cowplot)
+library(RColorBrewer)
+library(dplyr)
+library(ggplot2)
+library(corrplot)
+library(cluster) 
+library(fpc)
+library(devtools)
+library(ggpubr)
+library(C50)
+library(tidyverse)
+library(cowplot)
+library(psych)
+library(gapminder)
+library(pscl)
+library(knitr)
+library(kableExtra)
+library(caret)
+library(ggthemes)
+library(RColorBrewer)
+library(gganimate)
+library(magick)
+library(ggridges)
+library(maps)
+library(mapdata)
+library(pROC)
+library(broom)
+library(knitr)
+library(kableExtra)
+library(lubridate)
+library(bookdown)
+library(beanplot)
+summaryinfo <- function(df){ 
+  str(df)
+  dim(df)
+  summary(df) 
+}
+pairsplots <- function(df){ 
+  pairs <- pairs(df[,1:4],col=df[,5],oma=c(4,4,6,12))
+  par(xpd=TRUE)
+  legend(0.85,0.6, as.vector(unique(df$Species)),fill=c(1,2,3))
+}
+boxplots <- function(df){ 
+  par(mar=c(7,5,1,1))
+  boxplot(df)#
+}
+boxplotspec <- function(df){
+  dfsub1 <- subset(df, Species == "versicolor")
+  dfsub2 <- subset(df, Species == "setosa")
+  dfsub3 <- subset(df, Species == "virginica")
+  par(mfrow=c(1,3),mar=c(6,3,2,1))
+  boxplot(dfsub1[,1:4], main="Versicolor",ylim = c(0,8),las=2)
+  boxplot(dfsub2[,1:4], main="Setosa",ylim = c(0,8),las=2)
+  boxplot(dfsub3[,1:4], main="Virginica",ylim = c(0,8),las=2)
+}
+histplot <- function(df){
+  hist(df$Petal.Length)
+  par(mfrow=c(1,3))
+}
+histplotsspec <- function(df){ 
+  dfsub1 <- subset(df, Species == "versicolor")
+  dfsub2 <- subset(df, Species == "setosa")
+  dfsub3 <- subset(df, Species == "virginica")
+  hist1 <- hist(dfsub1$Petal.Length,breaks=seq(0,8,l=17),xlim=c(0,8),ylim=c(0,40))
+  hist2 <- hist(dfsub2$Petal.Length,breaks=seq(0,8,l=17),xlim=c(0,8),ylim=c(0,40))
+  hist3 <- hist(dfsub3$Petal.Length,breaks=seq(0,8,l=17),xlim=c(0,8),ylim=c(0,40))
+}
+treeunprun <- function(df){ 
+  df <- iris
+  input <- df[,1:4]
+  output <- df[,5]
+  model1 <- C5.0(input, output, control = C5.0Control(noGlobalPruning = TRUE,minCases=1))
+  plot(model1)
+}
+#still working on
+treeprun <- function(df){ 
+  df <- iris
+  input <- df[,1:4]
+  output <- df[,5]
+  model2 <- C5.0(input, output, control = C5.0Control(noGlobalPruning = FALSE))
+  plot(model2, main="C5.0 Decision Tree - Pruned")
+}
+#still working on
+parcoord <- function(df){
+  parcoord(df[,1:4], col=df[,5],var.label=TRUE,oma=c(4,4,6,12))
+  par(xpd=TRUE)
+  legend(0.85,0.6, as.vector(unique(df$Species)),fill=c(1,2,3))
+  
+}
+corr <- function(df){ 
+  corr <- cor(df[,1:4])
+  round(corr,3) 
+}
+bnplt <- function(df){
+library(beanplot)
+df <- iris
+df$Species <- NULL
+beanplot(df, main = "Iris flowers",col=c('#ff8080','#0000FF','#0000FF','#FF00FF'), border = "#000000")
+}
+bnplt(df)
+clustplot <- function(df){
+  set.seed(8593)
+  df$Species <- NULL
+  (kmeans.result <- kmeans(df, 3))
+  table(iris$Species, kmeans.result$cluster)
+  plot(df[c("Sepal.Length", "Sepal.Width")], col = kmeans.result$cluster)
+  points(kmeans.result$centers[c("Sepal.Length", "Sepal.Width")], col = 1:3, pch = 8, cex= 2)
+  data_for_clustering <- df[,-5] 
+  clusters_df <- kmeans(data_for_clustering, centers = 3) 
+  plotcluster(data_for_clustering,clusters_df$cluster) 
+  clusplot(data_for_clustering, clusters_df$cluster, color = TRUE, shade = TRUE)
+}
+ggplotsmooth <- function(df){
+  ggplot(df, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + 
+    geom_point() + 
+    geom_smooth()
+}
+ggplotline <- function(df){
+  df <- iris
+  ggplot(data = df, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + 
+    geom_smooth(aes(linetype = Species), size = 1, se = FALSE) + 
+    geom_point(aes(shape = Species), size = 3) + 
+    scale_shape_manual(values = c(16, 17, 18)) + 
+    scale_color_manual(values = c("purple",
+                                  "black",
+                                  "orange")) + 
+    scale_linetype_manual(values = c("solid",
+                                     "dashed",
+                                     "twodash"))
+}
+fctvert <- function(df){
+  ggplot(data = df, aes(x = Sepal.Length, y = Sepal.Width)) + 
+    geom_point(size = 3) + 
+    geom_smooth(size = 1, se = FALSE) + 
+    facet_wrap(~ Species)
+}
+fcthor <- function(df){
+  ggplot(data = df, aes(x = Sepal.Length, y = Sepal.Width)) + 
+    geom_point(size = 3) + 
+    geom_smooth(size = 1, se = FALSE) + 
+    facet_grid(rows = vars(Species))
+}
+gpplot <- function(df){
+  ggplot(df, aes(carat, price)) + 
+    geom_point(alpha = 0.05) + 
+    scale_y_continuous(trans = "log") + 
+    scale_x_continuous(trans = "log")
+}
+ghplot <- function(df){
+  ggplot(df, aes(price)) + 
+    geom_histogram()
+}
+gbplot <- function(df){
+  ggplot(df, aes(x = cut)) + 
+    geom_bar()
+}
+gbplotcy <- function(df){
+  ggplot(df, aes(cut, fill = clarity)) + 
+    geom_bar()
+}
+gcplot <- function(df){
+  ggplot(data.frame(x = c(1, 1, 2, 2, 3, 3), 
+                    y = c(40, 60, 30, 70, 20, 80), 
+                    z = c("A","B","A","B", "A", "B")), aes(x, y, fill = z)) + 
+    geom_col()
+}
+gbarplot <- function(df){
+  ggplot(df, aes(cut, fill = clarity)) + 
+    geom_bar(position = "dodge")
+}
+gjplotcy <- function(df){
+  ggplot(df, aes(cut, clarity)) + 
+    geom_jitter(alpha = 0.05)
+}
+gjplot <- function(df){
+  ggplot(df, aes(Sepal.Length, Sepal.Width, color = Species)) + 
+    geom_jitter() + 
+    scale_color_manual(values = c("black",
+                                  "green",
+                                  "magenta"))
+}
+gbxplot <- function(df){
+  ggplot(df, aes(cut, price)) + 
+    geom_boxplot()
+}
+gptplot <- function(df){
+  ggplot(df, aes(Sepal.Length, Sepal.Width, color = Species)) + 
+    geom_point() + 
+    scale_color_manual(values = c("black",
+                                  "green",
+                                  "magenta")) +
+    geom_smooth(method = "lm")+
+    theme_bw()
+  #or viridis::scale_color_viridis(option = "C")
+
+}
+glplot <- function(df){
+  ggplot(data.frame(x = 1:10, 
+                    y = 61:70), aes(x, y)) + 
+    geom_line() + 
+    background_grid()
+}
+glncol <- function(df){
+  ggplot(df, aes(x = Year)) + 
+  geom_line(aes(y = Winter), color = "black") + 
+  geom_line(aes(y = Spring), color = "green") + 
+  geom_line(aes(y = Summer), color = "magenta") + 
+  geom_line(aes(y = Fall), color = "cornflowerblue")
+}
+ute <- function(df){
+  unite(
+  (separate
+   (df, 
+     Results, 
+     c("FirstRace", "SecondRace", "ThirdRace"), 
+     sep = "-")), 
+  TotalTime, 
+  TotalMinutes, 
+  TotalSeconds, 
+  sep = ":")
+}
+mttdbl <-  function(df){
+  mutate(dblcol = AvgTemp * 2)
+}
+mttdblsqr <- function(df){
+  LongTemps %>%
+  mutate(TwiceTemp = AvgTemp * 2,
+         TwiceSquaredTemp = TwiceTemp^2,
+         YearSeason = paste(Year, Season))
+}
+avg <- function(df){
+  mean(df$col)
+}
+testcor <- function(df){
+  cor.test(iris$Sepal.Length, iris$Sepal.Width)
+}
+fltrcol <- function(df){
+  df[df$Sepal.Length > 7.5, ]
+}
+fltrtp <- function(df){
+  df %>%
+  filter(Species == "setosa")
+}
+fltrtpcol <- function(df){
+  df %>%
+  filter(Species == "setosa" & Sepal.Length == 5.1 & Sepal.Width == 3.3)
+}
+mttmn <- function(df){
+iris %>%
+  select(c(Sepal.Length, Species)) %>%
+  group_by(Species) %>%
+  mutate(SLDistanceFromGroupMean = Sepal.Length - mean(Sepal.Length)) %>%
+  ungroup() %>%
+  mutate(SLDistanceFromTotalMean = Sepal.Length - mean(Sepal.Length))
+}
+msngplc <- function(df){
+  df %>%
+  replace_na(list(y = "mi", z = "078"))
+}
+msngdrp <- function(df){
+  df %>%
+  drop_na()
+}
+renmcol <- function(df){
+  df %>%
+  count(col1, col2) %>%
+  rename(colnew = col3)
+}
+dscrb <- function(df){
+  describe(df)
+}
+fltrmin <- function(df){
+  df %>%
+  filter(col1 == min(col1))
+}
+gfrqply <- function(df){
+  ggplot(df, aes(gdpPercap, ..density.., color = continent)) + 
+  geom_freqpoly() 
+}
+fltrnum <- function(df){
+  head(select_if(df, is.numeric))
+}
+corrnum <- function(df){
+  cor(select_if(df, is.numeric))
+}
+linearmsum <- function(df){
+  summary(lm(lifeExp ~ gdpPercap, data = gapminder_unfiltered))
+}
+linearm <- function(df){
+  lm(lifeExp ~ gdpPercap, data = gapminder_unfiltered)
+}
+anvav <- function(df){
+  anova(aov(lifeExp ~ log(gdpPercap) + continent + year, data = gapminder_unfiltered))
+}
+modpred <- function(df){
+  gapPred <- gapminder_unfiltered
+  gapPred %>%
+    mutate(predict = predict(lm(lifeExp ~ log(gdpPercap) + continent + year + (log(gdpPercap)):continent, data = gapminder_unfiltered), newdata = gapminder_unfiltered))
+  
+  ggplot(gapPred, aes(gdpPercap)) + 
+  geom_point(aes(y = lifeExp)) + 
+  geom_point(aes(y = predict), color = "blue", alpha = 0.25)
+}
+modpredplot <- function(df){
+  gapPred <- gapminder_unfiltered
+  gapPred %>%
+  mutate(resid = predict-lifeExp) %>%
+  ggplot(aes(predict, resid)) + 
+  geom_point() + 
+  annotate("segment", x = -Inf, xend = Inf, y = 0, yend = 0, color = "red")
+}
+smryglm <- function(df){
+  summary(glm(am ~ hp + wt, data = mtcars, family="binomial"))
+}
+predglmrsp <-function(df){
+  head(predict(glm(am ~ hp + wt, data = mtcars, family="binomial"), mtcars, type = "response"))
+}
+diftbl <- function(df){
+  tibble("If the difference in AIC is:" = c("0-2", "2-4", "4+"),
+       "The model with lowest AIC is:" = c("Identical to the other one", "Maybe better", "Definitely better")) %>%
+  kable() %>%
+  kable_styling("striped")
+}
+cfsnmtxstt <- function(df){
+  mtmod <- glm(am ~ hp + wt, data = mtcars, family="binomial")
+mtcarspred <- mtcars
+linmod <- lm(am ~ hp + wt, data = mtcars)
+mtcarspred$lin <- round(predict(linmod, mtcarspred), 0)
+mtcarspred$log <- round(predict(mtmod, mtcarspred, type = "response"), 0)
+confusionMatrix(factor(mtcarspred$lin), factor(mtcarspred$am))
+}
+gptplotcustcol <- function(df){
+  ggplot(mpg, aes(cty, hwy)) +
+  geom_point(aes(color = displ)) + 
+  scale_color_gradient(low = "magenta", high = "black")
+}
+gptplotanm <- function(df){
+ggplot(gapminder, aes(gdpPercap, lifeExp, size = pop, colour = country)) +
+  geom_point(alpha = 0.7, show.legend = FALSE) +
+  scale_colour_manual(values = country_colors) +
+  scale_size(range = c(2, 12)) +
+  scale_x_log10() +
+  facet_wrap(~continent) +
+  labs(title = 'Year: {frame_time}', x = 'GDP per capita', y = 'life expectancy') +
+  transition_time(year) +
+  ease_aes('linear')
+}
+gareaplot <-function(df){
+  dtfrm <- tibble(x = c(1, 2, 3, 4,
+             1, 2, 3, 4,
+             1, 2, 3, 4),
+       y = c(33, 70, 50, 18,
+             33, 10, 25, 60,
+             34, 20, 25, 22),
+       z = c("A","A","A","A",
+             "B","B","B","B",
+             "C","C","C","C")) 
+  dtfrm %>%
+    ggplot(aes(x, y, fill = z)) + 
+    geom_area(alpha = 0.9, color = "black") +
+    scale_fill_brewer(palette="Purples")
+}
+grdgsplot <- function(df){
+  ggplot(df, aes(Sepal.Length, Species)) + 
+  ggridges::geom_density_ridges(aes(fill = Species))
+}
+pieplot <- function(df){
+  df <- tibble(x = c(33, 33, 33),
+             y = c("A", "B", "C"))
+pie(df$x, df$y)
+}
+sumdesc <- function(df){
+  return(list(Summary = summary(df), Describe = psych::describe(x)))
+}
+logplot <- function(df){
+  LogModelROC <- roc(df$y, AthleteLogisticModel$fitted.values)
+  plot.roc(LogModelROC)
+}
+glnce <- function(df){
+  glance(df)
+}
+datadsply <- function(df){
+df %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", 
+                                      "hover", 
+                                      "condensed", 
+                                      "responsive"), 
+                full_width = FALSE) %>%
+  scroll_box(height = "250px")
+}
+strfindexct <- function(df){
+  string <- c("lzGDHgldkh3orange2o5ghte")
+  str_detect(string, "orange")
+  str_locate(string, "orange")
+}
+strrplc <- function(df){
+  str_replace(string, "orange", "apple")
+}
+strxtrtlet <- function(df){
+  string <- c("lzGDHgldkh3orange2o5ghte")
+  str_extract_all(string, "o....e")
+}
+strxtrta <- function(df){
+  str_extract_all(string, "o\\D*?e")
+}
+dttm <- function(){
+  as_datetime(0)
+}
+dt <- function(){
+  as_date(0)
+}
+tmtbl <- function(){
+  TimeTable <- tibble(year = 2018,
+       day = 18,
+       hour = 5,
+       month = 2,
+       seconds = 5,
+       minute = 20)
+
+TimeTable %>%
+  mutate(date = make_date(year, month, day),
+         time = make_datetime(year, month, day, hour, minute, seconds))
+}
+dttmchng <- function(){
+  year(OurDate) <-  2020
+}
+tmzn <- function(){
+  Sys.timezone()
+}
+dshbrd <- function(df){
+  knitr::include_graphics("image")
+}
+avgtrm <- function(df){
+  mean(Vector, trim = 0.)
+}
+vr <- function(df){
+  var(Vector$col)
+}
+stdeverr <- function(df){
+  sd(Vector$col)
+  sd(Vector$col)/sqrt(length(Vector$col))
+}
+med <- function(df){
+  median(Vector$col)
+}
+rng <- function(df){
+  max(Vector$col) - min(Vector$col)
+}
+crtst <- function(df){
+  cor.test(vecotr$col, vector$col, method = "pearson")
+}
+ttst <- function(df){
+  t.test(Vector1, Vector2)
+}
+csqtst <- function(df){
+  chisq.test(Vector1, Vector2) 
+}
+linmod <-function(df){
+  lm(ResponseVector ~ PredictorVectors, data)
+}
+logmod <- function(df){
+  glm(ResponseVector ~ PredictorVectors, data, family = "binomial")
+}
+r2 <- function(df){
+  summar(lm(Sepal.Length ~ Species, iris))
+}
+```
