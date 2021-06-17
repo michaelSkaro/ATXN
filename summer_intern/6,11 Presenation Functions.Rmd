@@ -396,3 +396,92 @@ r2 <- function(df){
   summar(lm(Sepal.Length ~ Species, iris))
 }
 ```
+
+This is very strong progress. Your R coding is improving nicely. The next steps are to build this into an analysis pipieline. Your code will run when you press run by hand, great, but lets now have the computer do that for you. The next natural step is begin thinking about each of your functions as pieces to a larger analysis. Each of these functions now sit as viable experiments you can conduct on your data as many times as you would like to in your project. You have put together 20-30 options for you to invoke. Your next task will be to now think one layer higher. Be able to invoke these steps one after another without having to sit and invoke it yourself. 
+
+Design:
+  
+  import all the libraries you will need at the top of your script
+  Copy which functions you want to use below your library() lines
+  invoke the functions one at a time in a series.
+  
+  Here is basically a mini version of what you will want to do:
+  
+  
+  Library()
+  Library()
+  Library()
+  Library()
+  Library()
+  ...
+  ...
+  ...
+  ...
+  
+  #read in positional arguments from command line into memory as a string
+  
+  filename <- arg[1] 
+  file <- as.character(filename)
+  df <- read.csv(file)
+  
+  function1 <- function(df){
+  
+  }
+  
+  function2 <- function(df){
+  
+  }
+  
+  function3 <- function(df){
+  
+  }
+ 
+  ...
+  ...
+  ...
+  
+  invoke the functions, save outputs
+  
+  x<-function1(df)
+  write(x)
+  
+  x<-function2(df)
+  write(x)
+  
+  x<-function3(df)
+  write(x)
+  You can write these as pdf or png images if they are images or as a csv if they are a dataframe.
+
+The way you will accomplish this task will be to run an R script at the command line. The R script will then accept positional arguements. These will probably eventually include a working directory, input data such as the path to where your csv or txt files are located and or any other variables you want to define as global variables.I suggest just starting with a filename as the only arguement and build up from there. 
+
+See this link below: It will teach you how to build your R script as a command line invokable software. You will pass your file name into the R script as an arguement and select the types of experiments you will invoke. Finally, you will need to think of what you want to save as the outputs, how you will save them as outputs and what information is gained by doing each step. Remember you can pass the oputput of one function into the next if you create and return that variable in your function. This way you don't have to save all of the intermediates. 
+
+
+links:
+https://stackoverflow.com/questions/18306362/run-r-script-from-command-line
+
+Formally your R script should look something like this:
+
+library() # whichever libraries are needed
+
+sayHello <- function(){ # one of your experimental functions
+   print('hello')
+}
+
+sayHello() # running your functions at the bottom.
+
+
+
+
+Why am I having you do this?
+Well, this is how you will run your software on the GACRC. This is the first step to running your R scripts on the RNAseq data. You will not want to sit an invoke your RNAseq scripts one command at a time. What you will do is build out the R script in the R markdown as you have done, pick your functions you want to use in the R script and then run that on your data on the bigger computer on the GACRC. 
+
+Very good job!!!! I look forward to seeing your first R scipt with the functions and outputs you decide to save and return. feel free to send me the R script once you have completed it, the data you ran it on and the arguments you made. I will run it on my computer and see if i can reproduce your outputs. 
+
+Update on the RNAseq:
+Samples are in QC right now. 
+
+
+
+
+
