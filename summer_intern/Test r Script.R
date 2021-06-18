@@ -78,3 +78,9 @@ irisscatplot <- scatplot(df)
 write(irisscatplot)
 irishistplot <- histplot(df)
 write(irishistplot)
+
+
+
+#this is a brief test of the format to use for the piepline. I have reiceved a few errors on  functions that previously worked in and R Markdown and had no issues when
+#knitting this when i re-tested it today. I google the errors and resolved most of them, however, the fixes that I made only caused more errors. If you see anything that 
+#should be resolved, please let me know.
